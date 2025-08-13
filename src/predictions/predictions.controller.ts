@@ -9,7 +9,9 @@ export class PredictionsController {
   @Get()
   async getPredictions(
     @Query(new ValidationPipe({ transform: true })) query: GetPredictionsDto,
+    @Query('refresh') refresh?: string,
   ) {
-    return this.service.getPredictionsByDate(query.date);
+    const refreshFlag = refresh === 'true';
+    return this.service.getPredictionsByDate(query.date, refreshFlag);
   }
 }
