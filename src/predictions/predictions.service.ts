@@ -1,6 +1,7 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { PredictionsRepository } from './predictions.repository';
 import axios from 'axios';
+import { BETMINER_MOCK_DATA } from './betminer-mock-data';
 
 @Injectable()
 export class PredictionsService {
@@ -48,6 +49,12 @@ export class PredictionsService {
       // Return filtered matches for Postman
       return filtered;
     } catch (err) {
+      if (err.response?.status === 429) {
+        console.warn('⚠️ BetMiner rate limit hit — returning mock data');
+        await this.repo.savePrediction(date, BETMINER_MOCK_DATA);
+        return BETMINER_MOCK_DATA;
+      }
+
       console.error('❌ Error fetching from BetMiner:', err.message);
       throw new InternalServerErrorException('Failed to fetch predictions');
     }
