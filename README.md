@@ -101,3 +101,9 @@ To fetch fresh data directly from BetMiner and update the cache:
 ```bash
 GET /predictions?date=YYYY-MM-DD&refresh=true
 ```
+
+## Live URL
+
+```bash
+https://football-prediction-system-backend.onrender.com/
+```
